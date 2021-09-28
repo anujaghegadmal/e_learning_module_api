@@ -5,38 +5,37 @@ from flask_cors import CORS,cross_origin
 
 obj=users_model()
 
-@app.route("/users/login_in",methods=["POST"])
+@app.route("/users/login",methods=["POST"])
 @cross_origin()
-def login_in():
+def login():
     try:
         data=request.form.to_dict()
         print(data)
-        return make_response(obj.login_in_model(data))
+        return obj.login_model(data)
         
     except Exception as e:
         print(e)
         return make_response({"Error":"Contact developer"},500)
 
-@app.route("/users/login_std",methods=["POST"])
+@app.route("/users/create_in",methods=["POST"])
 @cross_origin()
-def login_std():
-    try:
-        data=request.form.to_dict()
-        print(data)
-        return make_response(obj.login_std_model(data))
-        
-    except Exception as e:
-        print(e)
-        return make_response({"Error":"Contact developer"},500)
-
-@app.route("/users/create",methods=["POST"])
-@cross_origin()
-def add_user():
+def add_user_in():
     try:
         # Getting values sent from postman in request.form
         # Converting Key values in dictionary using to_dict()
         data=request.form.to_dict()
-        return obj.add_user_model(data)
+        return obj.add_user_in_model(data)
+        
+    except Exception as e:
+        print(e)
+        return make_response({"Error":"Contact developer"},500)
+
+@app.route("/users/create_std",methods=["POST"])
+@cross_origin()
+def add_user_std():
+    try:
+        data=request.form.to_dict()
+        return obj.add_user_std_model(data)
         
     except Exception as e:
         print(e)

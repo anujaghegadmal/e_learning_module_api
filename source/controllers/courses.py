@@ -6,7 +6,7 @@ import os
 import time
 
 obj=courses_model()
-
+# print(app.root_path)
 @app.route("/courses/create",methods=["POST"])
 @cross_origin()
 @token_authenticator(roles["in_only"])
@@ -14,10 +14,10 @@ def add_course():
     try:
         data=request.form.to_dict()
         print(data)
-        print(token_data["data"]["id"])
+        # print(token_data["data"]["id"])
         # return make_response({"success":"This is add course function"})
         return obj.add_course_model(data,token_data["data"]["id"])
-        # return ("jknjn")
+
     except Exception as e:
         print(e)
         return make_response({"Error":"Contact developer"},500)
@@ -144,6 +144,7 @@ def publish_course(course_id):
 
 @app.route("/courses/upload_thumbnail", methods=["POST"])
 @cross_origin()
+# @token_authenticator(roles["in_only"])
 def upload_thumbnail():
     file=request.files['file']
     current_time=str(time.time())

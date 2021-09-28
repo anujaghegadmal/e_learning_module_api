@@ -1,6 +1,8 @@
+from source import app
 from flask import make_response
 import psycopg2
 from psycopg2.extras import RealDictCursor
+import os
 
 class courses_model:
     def __init__(self):
@@ -10,7 +12,12 @@ class courses_model:
         
     def add_course_model(self,data,id):
         try:
-            self.cursor.execute("insert into courses(course_name,course_description,course_img_thumbnail,course_fees,duration,status,created_by) values('"+data["course_name"]+"','"+data["course_description"]+"','"+data["course_img_thumbnail"]+"','"+data["course_fees"]+"','"+data["duration"]+"','p',"+str(id)+")")
+            self.cursor.execute("insert into courses(course_name,course_description,course_img_thumbnail,course_fees,duration,status,created_by) values('"+data["course_name"]+"','"+data["course_description"]+"','"+data["course_img_thumbnail"]+"','"+data["course_fees"]+"','"+data["duration"]+"','p',"+str(id)+") returning created_by, id")
+            fetched_data=self.cursor.fetchall()
+            print(fetched_data[0]['created_by'])
+            print(fetched_data[0]['id'])
+            # print(app.root_path+"/uploads_v/"+str(fetched_data[0]['created_by'])+"/"+str(fetched_data[0]['id']))
+            os.mkdir(app.root_path+"/uploads_v/"+str(fetched_data[0]['created_by'])+"/"+str(fetched_data[0]['id']))
             return make_response({"status_message":"COURSE CREATED"},200)
  
         except Exception as e:
@@ -117,7 +124,7 @@ class courses_model:
     # 4th call
     def search_course_model(self,search):
         try:
-            self.cursor.execute("select * from courses_v where lower(course_name) like '%"+search+"%'")
+            self.cursor.execute("select * from courses_v where status='a' and lower(course_name) like '%"+search+"%'")
             fetched_data=self.cursor.fetchall()
             print(fetched_data)
             return make_response({"status_message":"COURSE FOUND","payload":fetched_data},200)

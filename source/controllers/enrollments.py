@@ -17,6 +17,18 @@ def add_enrollment():
     except Exception as e:
             return make_response({"Error":"Contact developer"},500)
 
+@app.route("/favourites/create",methods=["POST"])
+@cross_origin()
+@token_authenticator(roles["std_only"])
+def add_favourites():
+    try:
+        data=request.form.to_dict()
+        print(token_data["data"]["id"])
+        return obj.add_favourites_model(data,token_data["data"]["id"])
+
+    except Exception as e:
+            return make_response({"Error":"Contact developer"},500)
+
 @app.route("/enrollments/read")
 @cross_origin()
 @token_authenticator(roles["std_only"])
@@ -50,18 +62,6 @@ def update_enrollment(enrollments_id):
     except Exception as e:
             return make_response({"Error":"Contact developer"},500)
 
-@app.route("/enrollments/show_fav")
-@cross_origin()
-@token_authenticator(roles["std_only"])
-def list_fav_courses():
-    try:
-        print(token_data["data"]["id"])
-        return obj.list_fav_courses_model(token_data["data"]["id"])
-
-    except Exception as e:
-            return make_response({"Error":"Contact developer"},500)
-
-
 # @app.route("/enrollments/delete/<id>")
 # @cross_origin()
 # def delete_enrollment(id):
@@ -81,6 +81,17 @@ def my_enrollments():
 
     except Exception as e:
         return make_response({"Error":"Contact developer"},500)
+
+@app.route("/enrollments/show_fav")
+@cross_origin()
+@token_authenticator(roles["std_only"])
+def list_fav_courses():
+    try:
+        print(token_data["data"]["id"])
+        return obj.list_fav_courses_model(token_data["data"]["id"])
+
+    except Exception as e:
+            return make_response({"Error":"Contact developer"},500)
 
 @app.route("/enrollments/total_enrollments")
 @cross_origin()

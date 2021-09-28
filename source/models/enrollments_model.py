@@ -11,16 +11,30 @@ class enrollments_model:
     def add_enrollment_model(self,data,id):
         try:
             print(data)
-            self.cursor.execute("insert into enrollments(created_by,course_id,status) values("+str(id)+",'"+data["course_id"]+"','f')")
+            # print(data["course_id"])
+            self.cursor.execute("insert into enrollments(created_by,course_id,status) values("+str(id)+",'"+data["course_id"]+"','a')")
             return make_response({"status_message":"ENROLLED SUCCESSFULLY"},200)
 
         except Exception as e:
+            print(str(e))
+            return make_response({"Error":str(e)},500)
+
+
+    def add_favourites_model(self,data,id):
+        try:
+            print(data)
+            # print(data["course_id"])
+            self.cursor.execute("insert into enrollments(created_by,course_id,status) values("+str(id)+",'"+data["course_id"]+"','f')")
+            return make_response({"status_message":"COURSE ADDED TO FAVOURITES"},200)
+
+        except Exception as e:
+            print(str(e))
             return make_response({"Error":str(e)},500)
 
 
     def list_enrollment_model(self,id):
         try:
-            self.cursor.execute("select * from my_learning_v where created_by="+str(id))
+            self.cursor.execute("select * from enrollments where status='f' and created_by="+str(id))
             fetched_data=self.cursor.fetchall()
             print(fetched_data)
             return make_response({"payload":fetched_data},200)
@@ -47,19 +61,6 @@ class enrollments_model:
         except Exception as e:
             return make_response({"Error":str(e)},500)
 
-    def list_fav_courses_model(self,id):
-        try:
-            # list all favourite courses 
-            self.cursor.execute("select * from favourites_v where created_by="+str(id))
-            # how to add 2 conditions in select query?
-            fetched_data=self.cursor.fetchall()
-            print(fetched_data)
-            return make_response({"payload":fetched_data},200)
-
-        except Exception as e:
-            return make_response({"Error":str(e)},500)
-
-
     # def delete_enrollment_model(self,id):
     #     try:
     #         return make_response({"status_message":"ENROLLMENT DELETED SUCCESSFULLY"},200)
@@ -69,7 +70,19 @@ class enrollments_model:
 
     def my_enrollments_model(self,id):
         try:
-            self.cursor.execute("select * from my_enrollments_v where student_id="+str(id))
+            self.cursor.execute("select * from my_enrollments_v where status='a' and student_id="+str(id))
+            fetched_data=self.cursor.fetchall()
+            print(fetched_data)
+            return make_response({"payload":fetched_data},200)
+
+        except Exception as e:
+            return make_response({"Error":str(e)},500)
+
+    def list_fav_courses_model(self,id):
+        try:
+            # list all favourite courses 
+            self.cursor.execute("select * from my_enrollments_v where status='f' and student_id="+str(id))
+            # how to add 2 conditions in select query?
             fetched_data=self.cursor.fetchall()
             print(fetched_data)
             return make_response({"payload":fetched_data},200)

@@ -57,9 +57,10 @@ class videos_model:
             return make_response({"Error":str(e)},500)
 
     # 13th call
-    def get_course_wise_videos_model(self,course_id,id):
+    def get_course_wise_videos_model(self,course_id):
         try:
-            self.cursor.execute("select * from videos_v where status='a' and course_id="+course_id+" and created_by="+str(id))
+            # print("select * from videos_v where status='a' and course_id="+course_id)
+            self.cursor.execute("select * from videos_v where status='a' and course_id="+course_id)
             fetched_data=self.cursor.fetchall()
             print(fetched_data)
             return make_response({"payload":fetched_data},200)
