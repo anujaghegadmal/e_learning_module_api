@@ -152,7 +152,7 @@ def upload_thumbnail():
     final_filename=time_frags[0]+time_frags[1]+os.path.splitext(file.filename)[1]
     # print(os.path.splitext(file.filename))
     # print(os.path.splitext(file.filename)[1])
-    file.save(os.path.join("C:/Users/Anuja Ghegadmal/Documents/Projects/mvc_practice/source/uploads",final_filename))
+    file.save(os.path.join(app.root_path+"/uploads/",final_filename))
     # print(file.filename)
     return make_response({"filename":"uploads/"+final_filename},200)
 

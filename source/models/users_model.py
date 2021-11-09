@@ -8,7 +8,7 @@ import datetime
 
 class users_model:
     def __init__(self):
-        self.con=psycopg2.connect(dbname="e_learning",user="postgres",host="localhost",password="anujagr98",port=5432)
+        self.con=psycopg2.connect(dbname="e_learning",user="postgres",host="localhost",password="123",port=5432)
         self.con.set_session(autocommit=True)
         self.cursor=self.con.cursor(cursor_factory=RealDictCursor)
 
